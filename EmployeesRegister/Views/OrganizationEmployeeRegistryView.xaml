@@ -9,7 +9,7 @@
         <ResourceDictionary Source="ResourceDictionary.xaml" />
     </UserControl.Resources>
 
-    <Grid Margin="10">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -34,16 +34,18 @@
                   AutoGenerateColumns="False"
                   Background="White"
                   IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Сотрудник" Binding="{Binding Person.Name}" Width="*" />
-                <DataGridTextColumn Header="Должность" Binding="{Binding Position}" Width="120" />
-                <DataGridTextColumn Header="Оклад" Binding="{Binding Salary, StringFormat={}{0:N2} тыс.руб.}" Width="120"/>
-            </DataGrid.Columns>
-            <DataGrid.ItemContainerStyle>
-                <Style TargetType="DataGridRow"/>
-            </DataGrid.ItemContainerStyle>
+            <DataGrid.Resources>
+                <ContextMenu x:Key="RowContextMenu">
+                    <ContextMenu.Items>
+                        <MenuItem Header="удалить"
+                                  Command="{Binding DataContext.RemoveEmployeeCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                  CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"/>
+                    </ContextMenu.Items>
+                </ContextMenu>
+            </DataGrid.Resources>
             <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
+                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <Setter Property="ContextMenu" Value="{StaticResource RowContextMenu}" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=Salary, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SalaryToBooleanConverter}}" Value="True">
                             <Setter Property="Background">
@@ -55,6 +57,11 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Сотрудник" Binding="{Binding Person.Name}" Width="*" />
+                <DataGridTextColumn Header="Должность" Binding="{Binding Position}" Width="120" />
+                <DataGridTextColumn Header="Оклад" Binding="{Binding Salary, StringFormat={}{0:N2} тыс.руб.}" Width="120"/>
+            </DataGrid.Columns>
         </DataGrid>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="3" Margin="0,3">

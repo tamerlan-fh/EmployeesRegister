@@ -51,6 +51,20 @@
                   AutoGenerateColumns="False"
                   Background="White"
                   IsReadOnly="True">
+            <DataGrid.Resources>
+                <ContextMenu x:Key="RowContextMenu">
+                    <ContextMenu.Items>
+                        <MenuItem Header="удалить"
+                                  Command="{Binding DataContext.RemoveOrganizationCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                  CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"/>
+                    </ContextMenu.Items>
+                </ContextMenu>
+            </DataGrid.Resources>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <Setter Property="ContextMenu" Value="{StaticResource RowContextMenu}" />
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Организация" Binding="{Binding Caption}" Width="*" />
                 <DataGridTextColumn Header="Число сотудников" Binding="{Binding Employees.Count}" Width="120" />
