@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="EmployeesRegister.Views.SqlRequestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:EmployeesRegister.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:SqlRequestViewModel/>
+    </UserControl.DataContext>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Content="Обновить исходные коллекции" Margin="3" Padding="10,3" MinWidth="150" Command="{Binding RefreshCollectionsCommand}" />
+            <Button Content="sql 1" Margin="3" Padding="10,3" MinWidth="150" Command="{Binding SqlRequest1Command}" />
+            <Button Content="sql 2" Margin="3" Padding="10,3" MinWidth="150" Command="{Binding SqlRequest2Command}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <HeaderedContentControl Margin="10" Grid.Row="0" Header="Организации">
+                    <DataGrid ItemsSource="{Binding Organizations, UpdateSourceTrigger=PropertyChanged}" 
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="организация" Binding="{Binding Caption}" Width="*">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRich}" Value="True">
+                                                <Setter Property="Background">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="Orange" Opacity="0.5"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Margin="10" Grid.Row="1" Header="соискатели">
+                    <DataGrid ItemsSource="{Binding Persons, UpdateSourceTrigger=PropertyChanged}" 
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Номер телефона" Binding="{Binding Phone}" Width="*" />
+                            <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Margin="10" Grid.Row="2" Header="сотрудники">
+                    <DataGrid ItemsSource="{Binding Employees, UpdateSourceTrigger=PropertyChanged}" 
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Организация" Binding="{Binding Organization.Caption}" Width="*" />
+                            <DataGridTextColumn Header="Сотрудник" Binding="{Binding Person.Name}" Width="*" />
+                            <DataGridTextColumn Header="Должность" Binding="{Binding Position}" Width="*" />
+                            <DataGridTextColumn Header="Оклад" Binding="{Binding Salary, StringFormat={}{0} тыс.руб.}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Margin="10" Grid.Row="3" Header="сотрудники компаний с максимальной зарплатой">
+                    <DataGrid ItemsSource="{Binding SqlRequestCollection, UpdateSourceTrigger=PropertyChanged}" 
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Организация" Binding="{Binding Organization.Caption}" Width="*" />
+                            <DataGridTextColumn Header="Сотрудник" Binding="{Binding Person.Name}" Width="*" />
+                            <DataGridTextColumn Header="Оклад" Binding="{Binding Salary, StringFormat={}{0} тыс.руб.}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </HeaderedContentControl>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

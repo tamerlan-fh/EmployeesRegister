@@ -1,0 +1,32 @@
+﻿<Window x:Class="EmployeesRegister.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EmployeesRegister.Views"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="450" Width="800" 
+        WindowStartupLocation="CenterScreen" 
+        Icon="/EmployeesRegister;component/Icons/usatu.ico">
+    
+    <Grid Margin="10">
+        <TabControl Background="Transparent">
+            <TabItem Header="Организации" MinWidth="150">
+                <local:OrganizationRegistryView Background="Transparent"/>
+            </TabItem>
+
+            <TabItem Header="Структура организации" MinWidth="150">
+                <local:OrganizationStructureView Background="Transparent"/>
+            </TabItem>
+
+            <TabItem Header="Биржа труда" MinWidth="150">
+                <local:PersonRegistryView Background="Transparent"/>
+            </TabItem>
+
+            <TabItem Header="*sql запросы" MinWidth="150">
+                <local:SqlRequestView Background="Transparent"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="EmployeesRegister.Views.PersonRegistryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EmployeesRegister.ViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:PersonRegistryViewModel/>
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="ResourceDictionary.xaml" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition MinWidth="300" Width="300"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <GridSplitter Grid.Column="1" Grid.Row="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  />
+
+        <DataGrid Grid.Row="0" Grid.Column="0" MinWidth="100"
+                  x:Name="EmployeesGrid"
+                  ItemsSource="{Binding Persons, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding SelectedPerson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  AutoGenerateColumns="False"
+                  Background="White"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="Номер телефона" Binding="{Binding Phone}" Width="*" />
+                <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="*" />
+                <DataGridTextColumn Header="Трудоустройство" Binding="{Binding Employees.Count, StringFormat={}{0} раб. мест}"  Width="120">
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border BorderBrush="Black" BorderThickness="0.3" Grid.Column="2" Grid.Row="0">
+            <ContentControl Margin="5"
+                            Content="{Binding SelectedPerson, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalContentAlignment="Stretch" 
+                            VerticalContentAlignment="Top"/>
+        </Border>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,3">
+            <Button Content="обновить коллекцию" 
+                    Command="{Binding RefreshPersonsCommand}" 
+                    Margin="3" MinWidth="150" Padding="5,3"/>
+            <Button Content="новый кандидат" 
+                    Command="{Binding CreatePersonCommand}" 
+                    Margin="3" MinWidth="150" Padding="5,3"/>
+            <Button Content="удалить кандидата" 
+                    Command="{Binding RemovePersonCommand}" 
+                    CommandParameter="{Binding ElementName=PersonsGrid, Path=SelectedItem}"
+                    Margin="3" MinWidth="150" Padding="5,3"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
+
