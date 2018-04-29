@@ -14,8 +14,6 @@
             IsActive = true;
         }
 
-        public new Person Person { get; }
-
         public bool IsActive { get; set; }
     }
 

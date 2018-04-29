@@ -290,7 +290,7 @@ namespace EmployeesRegister.DataAccess
         {
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = @"SELECT [organization].*, [person].*, position, salary FROM [employee] JOIN [organization],[person] ON [employee].oid=[organization].oid AND [employee].pid=[person].pid  WHERE [employee].active=1;";
+                command.CommandText = @"SELECT organization.oid, organization.name as oname, person.pid, person.name as pname, person.phone, person.address, position, salary FROM [employee] JOIN [organization],[person] ON [employee].oid=[organization].oid AND [employee].pid=[person].pid  WHERE [employee].active=1;";
 
                 var table = Execute(command);
                 if (!table.Success)
@@ -299,13 +299,13 @@ namespace EmployeesRegister.DataAccess
                 var employees = table.Value.Select().Select(record => new Employee(
                     new Employee(new Person(Convert.ToInt32(record["pid"]))
                     {
-                        Name = Convert.ToString(record["name"]),
+                        Name = Convert.ToString(record["pname"]),
                         Address = Convert.ToString(record["address"]),
                         Phone = Convert.ToString(record["phone"])
                     },
                     new Organization(Convert.ToInt32(record["oid"]))
                     {
-                        Caption = Convert.ToString(record["name"])
+                        Caption = Convert.ToString(record["oname"])
                     })
                     {
                         IsActive = true,
